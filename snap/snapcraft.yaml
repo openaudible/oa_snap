@@ -1,0 +1,87 @@
+name: openaudible
+adopt-info: openaudible # see 'openaudible' part's parse-info property
+
+grade: devel
+confinement: devmode
+base: core18
+icon: 192x192.png
+
+# license: proprietary
+website: https://openaudible.org
+
+# description: testdesc
+version: 3.4.2
+
+architectures:
+    - build-on: amd64
+      run-on: amd64
+
+parts:
+    openaudible:
+        source: .
+        plugin: dump
+        # set version number, snap summary, and snap description from metainfo file
+        parse-info: [openaudible/usr/share/metainfo/org.openaudible.OpenAudible.appdata.xml]
+        build-packages:
+         - wget
+        stage-packages: # not sure which are required for swt java app
+         - libswt-gtk-3-java
+         - x11-xserver-utils
+         - libxss1
+         - libgconf2-4
+         - libcurl4
+         - xdg-utils
+         - libswt-webkit-gtk-4-jni
+         - ibus-gtk3
+         - libibus-1.0-5
+         - libnss3-dev
+         - libgtk-3-bin
+
+#     libgtk-3-bin ca-certificates wget libswt-webkit-gtk-4-jni vim xdg-utils libnss3-dev
+#        source:
+#             - testfile  # not sure how to copy local file.
+
+        override-pull: |
+            echo "pulling... pwd=`pwd`"
+            wget -q --show-progress https://openaudible.org/latest/OpenAudible_x86_64.AppImage
+            chmod +x OpenAudible_x86_64.AppImage
+            # extract the AppImage
+            ./OpenAudible_x86_64.AppImage --appimage-extract
+            # remove the AppImage so it doesn't get copied into final snap package
+            rm OpenAudible_x86_64.AppImage
+            # give it a better name
+            mv squashfs-root openaudible
+
+            echo "testing.. looking at results so far, pwd=`pwd` where is home `ls ~` "
+
+            # Create a start.sh file to launch the app.
+            echo '#!/bin/bash\nDIR="$(dirname "$(readlink -f "$0")")"\ncd $DIR\necho "starting oa at $DIR home=$SNAP_USER_COMMON snap=$SNAP "\n./jre/bin/java -Dfile.encoding=UTF8 -Dsun.jnu.encoding=UTF-8 -Duser.home=$SNAP_USER_COMMON -jar openaudible_gtk_x86_64.jar' > openaudible/start.sh
+
+            chmod +x openaudible/start.sh
+            cat openaudible/start.sh
+
+            echo "fixing permissions"
+ 
+            # Fix the permissions
+            chmod -R go+rX .
+            # Set the Exec= line and Icon= line of the .desktop file to values suitable for Snap
+            sed -i -E 's|^Exec=.*$|Exec=openaudible %U|;s|^Icon=.*$|Icon=${SNAP}/openaudible/OpenAudible.png|' openaudible/org.openaudible.OpenAudible.desktop
+            cat openaudible/AppRun
+            cat openaudible/org.openaudible.OpenAudible.desktop
+apps:
+    openaudible:
+        command: openaudible/start.sh
+        desktop: openaudible/org.openaudible.OpenAudible.desktop
+        common-id: openaudible
+        extensions: [ gnome-3-28 ]
+        plugs:
+            - desktop
+            - x11
+            - home
+            - browser-support
+            - network
+            - removable-media
+
+        environment:
+         OA_MODE: snap
+
