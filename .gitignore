@@ -1,0 +1,7 @@
+*.snap
+old
+tmp
+squashfs-root
+*.AppImage
+openaudible
+update.sh

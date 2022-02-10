@@ -1,16 +1,21 @@
 name: openaudible
-adopt-info: openaudible # see 'openaudible' part's parse-info property
+summary: Audiobook manager that downloads, converts, and organizes your audiobooks.
+description: OpenAudible is that catalogs and organizes your audiobooks. Features automatic download of your library, conversion to mp3/m4b, export to web/csv/json. Includes import/export functions and utilities to quickly split audiobooks by chapter. OpenAudible loves, but is unaffiliated with audible.com.
+
+
 
 grade: devel
-confinement: devmode
+confinement: strict
 base: core18
-icon: 192x192.png
+icon: 256x256.png 
 
-# license: proprietary
+license: Proprietary
 website: https://openaudible.org
 
 # description: testdesc
-version: 3.4.2
+# version: ${OA_VERSION}  HOW DO I USE A VARIABLE HERE?
+version: 3.4.3
+# version: `./jre/bin/java -jar openaudible/openaudible_gtk_x86_64.jar --version`
 
 architectures:
     - build-on: amd64
@@ -18,67 +23,40 @@ architectures:
 
 parts:
     openaudible:
-        source: .
+        source: openaudible/
         plugin: dump
-        # set version number, snap summary, and snap description from metainfo file
-        parse-info: [openaudible/usr/share/metainfo/org.openaudible.OpenAudible.appdata.xml]
-        build-packages:
-         - wget
+
         stage-packages: # not sure which are required for swt java app
          - libswt-gtk-3-java
-         - x11-xserver-utils
-         - libxss1
-         - libgconf2-4
-         - libcurl4
+         - fontconfig-config  # trying to get rid of fontconfig errors.
+
+#         - x11-xserver-utils
+#         - libxss1
+#         - libgconf2-4
+#         - libcurl4
          - xdg-utils
          - libswt-webkit-gtk-4-jni
          - ibus-gtk3
-         - libibus-1.0-5
+#         - libibus-1.0-5
          - libnss3-dev
          - libgtk-3-bin
 
-#     libgtk-3-bin ca-certificates wget libswt-webkit-gtk-4-jni vim xdg-utils libnss3-dev
-#        source:
-#             - testfile  # not sure how to copy local file.
-
-        override-pull: |
-            echo "pulling... pwd=`pwd`"
-            wget -q --show-progress https://openaudible.org/latest/OpenAudible_x86_64.AppImage
-            chmod +x OpenAudible_x86_64.AppImage
-            # extract the AppImage
-            ./OpenAudible_x86_64.AppImage --appimage-extract
-            # remove the AppImage so it doesn't get copied into final snap package
-            rm OpenAudible_x86_64.AppImage
-            # give it a better name
-            mv squashfs-root openaudible
-
-            echo "testing.. looking at results so far, pwd=`pwd` where is home `ls ~` "
-
-            # Create a start.sh file to launch the app.
-            echo '#!/bin/bash\nDIR="$(dirname "$(readlink -f "$0")")"\ncd $DIR\necho "starting oa at $DIR home=$SNAP_USER_COMMON snap=$SNAP "\n./jre/bin/java -Dfile.encoding=UTF8 -Dsun.jnu.encoding=UTF-8 -Duser.home=$SNAP_USER_COMMON -jar openaudible_gtk_x86_64.jar' > openaudible/start.sh
-
-            chmod +x openaudible/start.sh
-            cat openaudible/start.sh
-
-            echo "fixing permissions"
- 
-            # Fix the permissions
-            chmod -R go+rX .
-            # Set the Exec= line and Icon= line of the .desktop file to values suitable for Snap
-            sed -i -E 's|^Exec=.*$|Exec=openaudible %U|;s|^Icon=.*$|Icon=${SNAP}/openaudible/OpenAudible.png|' openaudible/org.openaudible.OpenAudible.desktop
-            cat openaudible/AppRun
-            cat openaudible/org.openaudible.OpenAudible.desktop
 apps:
     openaudible:
-        command: openaudible/start.sh
-        desktop: openaudible/org.openaudible.OpenAudible.desktop
+        command: launch.sh
+        desktop: openaudible.desktop
         common-id: openaudible
-        extensions: [ gnome-3-28 ]
+        # 3-28, 3-34
+        extensions: [ gnome-3-34 ]
         plugs:
             - desktop
-            - x11
+            - desktop-legacy
+            - wayland
+            - unity7
+        #    - x11
             - home
             - browser-support
+            - dbus
             - network
             - removable-media
 
