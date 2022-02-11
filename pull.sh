@@ -17,6 +17,8 @@ mv squashfs-root openaudible
 # remove some unused items...
 rm openaudible/*.desktop
 rm -rf openaudible/usr
+rm -f openaudible/org.openaudible.OpenAudible
+rm -f openaudible/AppRun
 
 # Copy the launch and (optional) test scripts
 cp -f 256x256.png openaudible/
