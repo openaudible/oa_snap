@@ -4,10 +4,10 @@ description: OpenAudible is that catalogs and organizes your audiobooks. Feature
 
 
 
-grade: devel
+grade: stable
 confinement: strict
 base: core18
-icon: 256x256.png 
+icon: snap/gui/logo.png
 
 license: Proprietary
 # website: https://openaudible.org
