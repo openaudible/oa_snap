@@ -19,7 +19,7 @@ rm openaudible/*.desktop
 rm -rf openaudible/usr
 
 # Copy the launch and (optional) test scripts
-cp -f 192x192.png openaudible/
+cp -f 256x256.png openaudible/
 cp launch.sh openaudible/
 cp test.sh openaudible/
 
