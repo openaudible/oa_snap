@@ -11,11 +11,7 @@ icon: snap/gui/logo.png
 
 license: Proprietary
 # website: https://openaudible.org
-
-# description: testdesc
-# version: ${OA_VERSION}  HOW DO I USE A VARIABLE HERE?
 version: 3.4.3
-# version: `./jre/bin/java -jar openaudible/openaudible_gtk_x86_64.jar --version`
 
 architectures:
     - build-on: amd64
@@ -29,15 +25,9 @@ parts:
         stage-packages: # not sure which are required for swt java app
          - libswt-gtk-3-java
          - fontconfig-config  # trying to get rid of fontconfig errors.
-
-#         - x11-xserver-utils
-#         - libxss1
-#         - libgconf2-4
-#         - libcurl4
          - xdg-utils
          - libswt-webkit-gtk-4-jni
          - ibus-gtk3
-#         - libibus-1.0-5
          - libnss3-dev
          - libgtk-3-bin
 
@@ -53,13 +43,12 @@ apps:
             - desktop-legacy
             - wayland
             - unity7
-        #    - x11
             - home
             - browser-support
-        #    - dbus
             - network
             - removable-media
 
         environment:
          OA_MODE: snap
+         XAUTHORITY: ${SNAP_REAL_HOME}/.Xauthority
 
