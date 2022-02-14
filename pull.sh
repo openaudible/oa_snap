@@ -21,9 +21,9 @@ rm -f openaudible/org.openaudible.OpenAudible
 rm -f openaudible/AppRun
 
 # Copy the launch and (optional) test scripts
-cp -f 256x256.png openaudible/
 cp launch.sh openaudible/
 cp test.sh openaudible/
+cp openaudible.desktop openaudible/
 
 echo "Updated... Should be able to run snapcraft now." 
 

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=OpenAudible
+Exec="openaudible"  %U
+Icon=OpenAudible
+Categories=AudioVideo;Audio;
+Comment=Manage Audio books. Automatically access your Audible library and convert audiobooks to MP3
+
