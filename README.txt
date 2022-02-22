@@ -36,9 +36,21 @@ unsquashfs *.snap
 ## Install 
 
 ```
-sudo snap remove openaudible  # needed?
+sudo snap remove openaudible # remove previous 
 sudo snap install *.snap --devmode --dangerous
 ```
+
+## Troubleshoot permissions
+```
+sudo snap install snappy-debug
+sudo journalctl --output=short --follow --all | sudo snappy-debug -r
+```
+
+## Run
+openaudible --debug # run in terminal mode
+openaduble --version # show version and exit
+openaudible --help # get simple help
+openaudible # run normally
 
 
 ## Publish Info
