@@ -5,3 +5,7 @@ squashfs-root
 *.AppImage
 openaudible
 update.sh
+all.sh
+inst.sh
+jcef-bundle/
+

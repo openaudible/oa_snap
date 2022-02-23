@@ -3,7 +3,8 @@
 Instructions to build snap for OpenAudible.
 More info at https://openaudible.org
 
-
+## About
+This is still a work in progress. Getting some errors and warnings. 
 
 ## Setup
 
@@ -64,4 +65,6 @@ snapcraft upload --release=edge openaudible*.snap
 Pros/cons of running with core20 ?
 
 
+# Restart multipass:
+` sudo snap restart multipass.multipassd
 

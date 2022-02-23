@@ -25,13 +25,13 @@ while [[ $# -gt 0 ]]; do
 
     esac
 done
-echo "Starting OpenAudible: debug=$debug args=$args help=$help home=$UH"
 
 
 if [ $debug -eq 0 ] ; then 
-   ./jre/bin/java -Duser.home=$UH -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -DOA_MODE=snap -jar openaudible_gtk_x86_64.jar $args > /dev/null 2>&1 &
+   ./jre/bin/java -Doa_chromium=true -Duser.home=$UH -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -DOA_MODE=snap -jar openaudible_gtk_x86_64.jar $args > /dev/null 2>&1 &
 else
-   ./jre/bin/java -Duser.home=$UH -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -DOA_MODE=snap -jar openaudible_gtk_x86_64.jar $args 
+    echo "Starting OpenAudible: debug=$debug args=$args help=$help home=$UH"
+   ./jre/bin/java -Doa_chromium=true -Duser.home=$UH -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -DOA_MODE=snap -jar openaudible_gtk_x86_64.jar $args 
 fi
 
 

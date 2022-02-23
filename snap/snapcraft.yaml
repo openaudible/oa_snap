@@ -4,10 +4,10 @@ description: OpenAudible is that catalogs and organizes your audiobooks. Feature
 grade: stable
 confinement: strict
 base: core18
-icon: snap/gui/logo.png
+icon: snap/gui/256x256.png
 license: Proprietary
 # website: https://openaudible.org
-version: "3.4.3"
+version: "3.5.0.3"
 architectures:
   - build-on: amd64
     run-on: amd64
@@ -17,29 +17,36 @@ parts:
     plugin: dump
     stage-packages: # not sure which are required for swt java app
       - libswt-gtk-3-java
-      - fontconfig-config # trying to get rid of fontconfig errors.
+      #      - fontconfig-config # trying to get rid of fontconfig errors.
       - libswt-webkit-gtk-4-jni
       - ibus-gtk3
       - libnss3-dev
       - libgtk-3-bin
-#      - xdg-utils 
+# slots:
+#   dbus-svc:
+
 apps:
   openaudible:
     command: launch.sh
     desktop: openaudible.desktop
     common-id: openaudible
     # 3-28, 3-34
-    extensions: [gnome-3-34]
+    extensions: [gnome-3-28]
     plugs:
       - desktop
-      - desktop-legacy
-      - wayland
+      #      - desktop-legacy
+      #      - wayland
       - unity7
       - home
       - browser-support
       - network
+      - opengl
+      - x11
       - dbus
       - removable-media
     environment:
       OA_MODE: snap
       XAUTHORITY: ${SNAP_REAL_HOME}/.Xauthority
+      DISABLE_WAYLAND: 1
+      CHROME_DESKTOP: chromium.desktop
+      CHROME_CONFIG_HOME: $SNAP_USER_COMMON
